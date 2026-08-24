@@ -1,4 +1,4 @@
-package me.connor
+package me.connor.operation
 
 // lower number priority gets executed later
 abstract class Operation(val identifier: String, val priority: Int) {

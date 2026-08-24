@@ -1,11 +1,13 @@
-package me.connor
+package me.connor.operation
 
-class AdditionOperation : Operation("+", 1) {
+import me.connor.ExpressionUtils
+
+class SubtractionOperation : Operation("-", 1) {
     override fun apply(left: String, right: String): String {
         val leftNum = ExpressionUtils.getRightNumber(left)
         val rightNum = ExpressionUtils.getLeftNumber(right)
         return left.removeSuffix(leftNum.toString()) +
-                "${leftNum + rightNum}" +
+                "${leftNum - rightNum}" +
                 right.removePrefix(rightNum.toString())
     }
 }

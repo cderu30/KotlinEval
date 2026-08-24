@@ -1,9 +1,12 @@
 package me.connor
 
+import me.connor.operation.Operation
+
 object ExpressionParser {
     fun parseExpression(expression: String) {
+        println(expression)
         var expression = expression
-        loop@while (true) {
+        loop@ while (true) {
             if (ExpressionUtils.isNumber(expression)) break@loop
             var nextOperation: Operation? = null
             var nextOperationIndex = Int.MAX_VALUE
