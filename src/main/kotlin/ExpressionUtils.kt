@@ -25,7 +25,6 @@ object ExpressionUtils {
 
         val charCount = text.length
         for (i in text.toCharArray().indices) {
-            println(i)
             val char = text.toCharArray()[charCount - i - 1]
             if (char == '.') {
                 lastText += "."
