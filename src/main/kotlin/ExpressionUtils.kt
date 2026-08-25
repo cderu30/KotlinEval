@@ -14,7 +14,6 @@ object ExpressionUtils {
             } else {
                 return lastText.toDouble()
             }
-//            if (isNumber(char.toString()))
         }
 
         return lastText.toDouble()
@@ -36,7 +35,6 @@ object ExpressionUtils {
                 lastText = lastText.reversed()
                 return lastText.toDouble()
             }
-//            if (isNumber(char.toString()))
         }
 
         lastText = lastText.reversed()
