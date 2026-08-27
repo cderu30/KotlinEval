@@ -6,8 +6,10 @@ class AdditionOperation : Operation("+", 1) {
     override fun apply(left: String, right: String): String {
         val leftNum = ExpressionUtils.getRightNumber(left)
         val rightNum = ExpressionUtils.getLeftNumber(right)
-        return left.removeSuffix(leftNum.toString()) +
+        val leftNumStr = ExpressionUtils.untilRightNumber(left)
+        val rightNumStr = ExpressionUtils.untilLeftNumber(right)
+        return left.removeSuffix(leftNumStr) +
                 "${leftNum + rightNum}" +
-                right.removePrefix(rightNum.toString())
+                right.removePrefix(rightNumStr)
     }
 }

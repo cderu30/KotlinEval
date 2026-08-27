@@ -8,33 +8,64 @@ object ExpressionParser {
     fun parseExpression(expression: String) {
         println(expression)
         var expression = expression
+        var evaluatedParens = 0
         loop@while (true) {
             if (ExpressionUtils.isNumber(expression)) break@loop // solved
 
-            var lastOpenParenIndex: Int = -1
+//            var lastOpenParenIndex: Int = -1
+            val openParensIndices = arrayListOf<Int>()
+            val closeParensIndices = arrayListOf<Int>()
             var openParenCount = 0
             for (i in expression.toCharArray().indices) {
                 val char = expression[i]
                 if (char.toString() == "(") {
-                    lastOpenParenIndex = i
-                    openParenCount++
+//                    lastOpenParenIndex = i
+                    openParensIndices.add(i)
+//                    openParenCount++
                 }
                 if (char.toString() == ")") {
-                    openParenCount--
-                    println(openParenCount)
-                    if (lastOpenParenIndex != -1) {
-                        val t = expression.substring(lastOpenParenIndex + 1, i)
-                        if (ExpressionUtils.isNumber(t)) continue
-                        println("paren: $t")
-//                        expression = evaluate(t)
-                        expression = expression.replace(t, evaluate(t))
-                        println("evaluated: $expression")
-                        continue@loop
+                    closeParensIndices.add(i)
+//                    openParenCount--
+                    println(openParensIndices)
+//                    if (lastOpenParenIndex != -1) {
+                    if (openParensIndices.isNotEmpty()) {
+//                        val t = expression.substring(lastOpenParenIndex + 1, i)
+//                        if (ExpressionUtils.isNumber(t)) continue
+//                        println("paren: $t")
+////                        expression = evaluate(t)
+//                        expression = expression.replace(t, evaluate(t))
+//                        println("evaluated: $expression")
+//                        continue@loop
+
+//                        val t = expression.substring(openParensIndices[openParenCount - 1] + 1, i)
+//                        if (ExpressionUtils.isNumber(t)) {
+//                            openParensIndices.remove(i)
+//                            continue
+//                        }
+//                        println("paren: $t")
+////                        expression = evaluate(t)
+//                        expression = expression.replace(t, evaluate(t))
+//                        println("evaluated: $expression")
+//                        continue@loop
                     }
                 }
             }
 
-            expression = "finished: ${evaluate(" expression ")}"
+            if (openParensIndices.isNotEmpty() && evaluatedParens < openParensIndices.size) {
+                val t = expression.substring(openParensIndices[openParensIndices.size - evaluatedParens - 1] + 1, closeParensIndices[evaluatedParens])
+                if (ExpressionUtils.isNumber(t)) {
+//                    openParensIndices.remove(i)
+                    evaluatedParens++
+                    continue
+                }
+                println("paren: $t")
+//                        expression = evaluate(t)
+                expression = expression.replace(t, evaluate(t))
+                println("evaluated: $expression")
+                continue@loop
+            }
+
+            expression = "finished: ${evaluate(expression)}"
             println(expression)
             return
 
