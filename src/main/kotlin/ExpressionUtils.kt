@@ -21,6 +21,8 @@ object ExpressionUtils {
             if (isNumber(char.toString())) {
                 lastText += char.toString()
             } else {
+                println("last text $lastText")
+                println("text $text")
                 return lastText.toDouble()
             }
         }
