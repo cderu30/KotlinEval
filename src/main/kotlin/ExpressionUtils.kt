@@ -5,6 +5,11 @@ object ExpressionUtils {
         var lastText = ""
 
         for (char in text.toCharArray()) {
+            if (char == '-') {
+                lastText += "-"
+                continue
+            }
+
             if (char == '.') {
                 lastText += "."
                 continue
@@ -21,8 +26,6 @@ object ExpressionUtils {
             if (isNumber(char.toString())) {
                 lastText += char.toString()
             } else {
-                println("last text $lastText")
-                println("text $text")
                 return lastText.toDouble()
             }
         }
@@ -36,6 +39,11 @@ object ExpressionUtils {
         val charCount = text.length
         for (i in text.toCharArray().indices) {
             val char = text.toCharArray()[charCount - i - 1]
+            if (char == '-') {
+                lastText += "-"
+                continue
+            }
+
             if (char == '.') {
                 lastText += "."
                 continue
@@ -58,7 +66,6 @@ object ExpressionUtils {
         }
 
         lastText = lastText.reversed()
-        println("last $lastText")
         return lastText.toDouble()
     }
 
@@ -66,6 +73,11 @@ object ExpressionUtils {
         var lastText = ""
 
         for (char in text.toCharArray()) {
+            if (char == '-') {
+                lastText += "-"
+                continue
+            }
+
             if (char == '.') {
                 lastText += "."
                 continue
@@ -97,6 +109,11 @@ object ExpressionUtils {
         val charCount = text.length
         for (i in text.toCharArray().indices) {
             val char = text.toCharArray()[charCount - i - 1]
+            if (char == '-') {
+                lastText += "-"
+                continue
+            }
+
             if (char == '.') {
                 lastText += "."
                 continue

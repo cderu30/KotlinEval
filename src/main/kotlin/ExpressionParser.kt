@@ -1,15 +1,18 @@
 package me.connor
 
+import me.connor.LogUtils.devLog
 import me.connor.operation.Operation
 
 // iterate through all parens and save the ones that we solved or check isNumber()
 
 object ExpressionParser {
-    fun parseExpression(expression: String) {
-        println(expression)
+    fun parseExpression(expression: String, debugLogs: Boolean = true) : String {
+        devLog(expression, debugLogs)
         var expression = expression
         var evaluatedParens = 0
         loop@while (true) {
+            println("expression $expression")
+
             if (ExpressionUtils.isNumber(expression)) break@loop // solved
 
 //            var lastOpenParenIndex: Int = -1
@@ -26,7 +29,7 @@ object ExpressionParser {
                 if (char.toString() == ")") {
                     closeParensIndices.add(i)
 //                    openParenCount--
-                    println(openParensIndices)
+                    devLog(openParensIndices, debugLogs)
 //                    if (lastOpenParenIndex != -1) {
                     if (openParensIndices.isNotEmpty()) {
 //                        val t = expression.substring(lastOpenParenIndex + 1, i)
@@ -58,16 +61,16 @@ object ExpressionParser {
                     evaluatedParens++
                     continue
                 }
-                println("paren: $t")
+                devLog("paren: $t", debugLogs)
 //                        expression = evaluate(t)
-                expression = expression.replace(t, evaluate(t))
-                println("evaluated: $expression")
+                expression = expression.replace(t, evaluate(t, debugLogs))
+                devLog("evaluated: $expression", debugLogs)
                 continue@loop
             }
 
-            expression = "finished: ${evaluate(expression)}"
-            println(expression)
-            return
+            expression = evaluate(expression, debugLogs)
+            devLog("finished: $expression", debugLogs)
+            return expression
 
 //            var nextOperation: Operation? = null
 //            var nextOperationIndex = Int.MAX_VALUE
@@ -87,30 +90,43 @@ object ExpressionParser {
 //                println(result)
 //            }
         }
+
+        return expression
     }
 
-    fun evaluate(expression: String) : String {
-        println("evaluating $expression")
+    fun evaluate(expression: String, debugLogs: Boolean) : String {
+        devLog("evaluating: $expression", debugLogs)
         var expression = expression
-        loop@ while (true) {
-            if (ExpressionUtils.isNumber(expression)) break@loop
-
+        while (!ExpressionUtils.isNumber(expression)) {
             var nextOperation: Operation? = null
             var nextOperationIndex = Int.MAX_VALUE
+
             for (operation in Operations.classes) {
-                val i = expression.indexOf(operation.identifier)
-                if (i == -1) continue
-                if (i < nextOperationIndex || operation.priority > (nextOperation?.priority ?: Int.MIN_VALUE)) {
-                    nextOperationIndex = i
+                val index = expression.indexOf(operation.identifier)
+
+                if (index == -1) continue
+
+                if (
+                    nextOperation == null ||
+                    operation.priority > nextOperation.priority ||
+                    (
+                            operation.priority == nextOperation.priority &&
+                                    index < nextOperationIndex
+                            )
+                ) {
                     nextOperation = operation
+                    nextOperationIndex = index
                 }
             }
 
-            if (nextOperation != null) {
-                val raw = expression.split(nextOperation.identifier, limit = 2)
-                val result = nextOperation.apply(raw[0], raw[1])
-                expression = result
+            if (nextOperation == null) {
+                error("failed to eval: $expression")
             }
+
+            val operation = nextOperation
+            val raw = expression.split(operation.identifier, limit = 2)
+
+            expression = operation.apply(raw[0], raw[1])
         }
 
         return expression

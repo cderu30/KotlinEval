@@ -1,8 +1,8 @@
 package me.connor
 
-fun main() {
-    ExpressionParser.parseExpression("tan(1.5*3.0*(5.0+2.0)+1.2)")
+import kotlin.math.roundToInt
 
-//    val d = ExpressionUtils.getRightNumber("513.53a7328")
-//    println(d)
+fun main() {
+
+    println(ExpressionParser.parseExpression("-6.0-2.0"))
 }
